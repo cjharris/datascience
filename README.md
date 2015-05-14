@@ -3,5 +3,5 @@
 ![image](image/sta.png "figure 1")
 #### Figure 1
 
-#### cjharris@alumni.rutgers.edu
-#### https://cjharrisatru.wordpress.com/resume/
+cjharris@alumni.rutgers.edu
+https://cjharrisatru.wordpress.com/
