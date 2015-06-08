@@ -176,7 +176,7 @@ def max(array,idim):
 
 def angle(array,rmax):
 
-    sum  = [0.0 for i in range(2)]
+    sum = [0.0 for i in range(2)]
     for i in range(2):
         for e in array[i]:
             sum[0] = sum[0] + e/rmax[i]*array[i+4][0]
@@ -186,31 +186,25 @@ def angle(array,rmax):
 
 def regression(X,Y):
 
-    s0  = 0.
-    sx  = 0.
-    sx2 = 0.
-    sy  = 0.
-    sxy = 0.
-    p   = [0.0 for n in range(3)]
+    s = [0.0 for i in range(7)]
+    p = [0.0 for n in range(3)]
 
     for i,e in enumerate(X):
-        s0  = s0 + 1.
-        sx  = sx + X[i]
-        sx2 = sx2 + X[i]*X[i]
-        sy  = sy + Y[i]
-        sxy = sxy + X[i]*Y[i]
+        s[0] = s[0] + 1.
+        s[1] = s[1] + X[i]
+        s[2] = s[2] + X[i]*X[i]
+        s[3] = s[3] + Y[i]
+        s[4] = s[4] + X[i]*Y[i]
 
-    meanx = sx/s0
-    meany = sy/s0
-    p[0]  = (s0*sxy - sx*sy)/(s0*sx2 - sx*sx)
+    meanx = s[1]/s[0]
+    meany = s[3]/s[0]
+    p[0]  = (s[0]*s[4] - s[1]*s[3])/(s[0]*s[2] - s[1]*s[1])
     p[1]  = meany - p[0]*meanx
-    ssy   = 0.
-    ssr   = 0.
 
     for i,e in enumerate(X):
-        ssy = ssy + (Y[i] - meany)*(Y[i] - meany)
-        ssr = ssr + (Y[i] - p[1] - p[0]*X[i])*(Y[i] - p[1] - p[0]*X[i])
-    p[2] = math.sqrt(1.0 - ssr/ssy)
+        s[5] = s[5] + (Y[i] - meany)*(Y[i] - meany)
+        s[6] = s[6] + (Y[i] - p[1] - p[0]*X[i])*(Y[i] - p[1] - p[0]*X[i])
+    p[2] = math.sqrt(1.0 - s[6]/s[5])
     return p
 
 def plot():
