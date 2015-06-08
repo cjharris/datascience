@@ -189,22 +189,30 @@ def regression(X,Y):
     s = [0.0 for i in range(7)]
     p = [0.0 for n in range(3)]
 
+    # mean
     for i,e in enumerate(X):
         s[0] = s[0] + 1.
         s[1] = s[1] + X[i]
-        s[2] = s[2] + X[i]**2
-        s[3] = s[3] + Y[i]
-        s[4] = s[4] + X[i]*Y[i]
+        s[2] = s[2] + Y[i]
+    mx = s[1]/s[0]
+    my = s[2]/s[0]
 
-    meanx = s[1]/s[0]
-    meany = s[3]/s[0]
-    p[0]  = (s[0]*s[4] - s[1]*s[3])/(s[0]*s[2] - s[1]*s[1])
-    p[1]  = meany - p[0]*meanx
-
+    # standard deviation
     for i,e in enumerate(X):
-        s[5] = s[5] + (Y[i] - meany)**2
-        s[6] = s[6] + (Y[i] - p[1] - p[0]*X[i])**2
-    p[2] = math.sqrt(1.0 - s[6]/s[5])
+        s[4] = s[4] + (X[i]-mx)**2
+        s[5] = s[5] + (Y[i]-my)**2
+    sx = math.sqrt(s[4]/(s[0]-1.))
+    sy = math.sqrt(s[5]/(s[0]-1.))
+
+    # correlation
+    for i,e in enumerate(X):
+        s[6] = s[6] + (X[i]-mx)*(Y[i]-my)
+    rxy = s[6]/sx/sy/(s[0]-1.)
+
+    # slope, intercept, coefficient
+    p[0] = rxy*sy/sx
+    p[1] = my - p[0]*mx
+    p[2] = rxy
     return p
 
 def plot():
