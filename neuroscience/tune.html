@@ -194,11 +194,11 @@ def regression(X,Y):
     p   = [0.0 for n in range(3)]
 
     for i,e in enumerate(X):
-        s0   = s0 + 1.
-        sx   = sx + X[i]
-        sx2  = sx2 + X[i]*X[i]
-        sy   = sy + Y[i]
-        sxy  = sxy + X[i]*Y[i]
+        s0  = s0 + 1.
+        sx  = sx + X[i]
+        sx2 = sx2 + X[i]*X[i]
+        sy  = sy + Y[i]
+        sxy = sxy + X[i]*Y[i]
 
     meanx = sx/s0
     meany = sy/s0
