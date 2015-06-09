@@ -110,6 +110,14 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
+def max(X):
+
+    m = X[0]
+    for e in X:
+        if e &gt; m:
+            m = e
+    return m
+
 def mean(X):
 
     s = 0.
@@ -168,15 +176,11 @@ def pop(key):
         array[i] = stream[key[i]]
     return array
 
-def max(array,idim):
+def peak(array,idim):
 
     rmax = []
     for i in range(1,idim):
-        max = array[i][0]
-        for e in array[i]:
-            if e &gt; max:
-                max = e
-        rmax.append(max)
+        rmax.append(max(array[i]))
     print(&quot;\n\tRmax  = %s&quot; %[&quot;%.3f&quot; %e for e in rmax])
     return rmax
 
@@ -216,7 +220,7 @@ def plot():
     idim   = len(key[0])
     tarray = tune(key[0],idim)
     parray = pop(key[1])
-    rmax   = max(tarray,idim)
+    rmax   = peak(tarray,idim)
     angle(parray,rmax)
 
     mpl.rc('text', color='#C8A078')
