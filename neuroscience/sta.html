@@ -96,9 +96,9 @@ def extract():
 
 def sta(rho, stim, period, timestep):
 
-    sf       = [0.0 for n in range(timestep+1)]
-    step     = [0   for n in range(timestep+1)]
-    time     = [0   for n in range(timestep+1)]
+    sf       = [0. for n in range(timestep+1)]
+    step     = [[] for n in range(timestep+1)]
+    time     = [[] for n in range(timestep+1)]
     location = []
 
     for i,e in enumerate(rho[timestep+1:]):
@@ -106,16 +106,16 @@ def sta(rho, stim, period, timestep):
             location.append(i+timestep)
 
     spike = len(location)
-    f     = 1./spike
+    f     = 1/spike
     print(&quot;\n\tspike = %i\n&quot; %spike)
 
-    for j in range(0,timestep+1):
+    for j in range(timestep+1):
         step[j] = -timestep + j
         time[j] =  period*step[j]
 
     for i in location:
-        for j in range(0,timestep+1):
-            sf[j] = f*stim[i+step[j]] + sf[j]
+        for j in range(timestep+1):
+            sf[j] = sf[j] + f*stim[i+step[j]]
     return time, sf
 
 def plot():
