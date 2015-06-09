@@ -110,6 +110,27 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
+def mean(X):
+
+    s = 0.
+    for e in X:
+        s = s + e
+    return s/len(X)
+
+def var(X,mx):
+
+    s = 0.
+    for e in X:
+        s = s + (e-mx)**2
+    return s/(len(X)-1)
+
+def cor(X,Y,mx,my,sx,sy):
+
+    s = 0.
+    for i,e in enumerate(X):
+        s = s + (X[i]-mx)*(Y[i]-my)
+    return s/sx/sy/(len(X)-1)
+
 def tune(key,idim):
 
     data   = open(&quot;tuning.pickle&quot;,'rb')
@@ -122,32 +143,17 @@ def tune(key,idim):
     set      = []
 
     for i in range(1,idim):
-        set  = stream[key[i]]
-        mean = []
-        var  = []
+        set = stream[key[i]]
+        mx = []
+        vx = []
         for j in range(jdim):
-            sum = 0.
-            cnt = 0
+            row = []
             for k in range(jdim):
-                elm = set.item((k,j))
-                if elm:
-                    sum = sum + elm
-                    cnt = cnt + 1
-            if cnt: 
-                mean.append(sum/cnt)
-            else:
-                mean.append(0.)
-                var.append (0.)
-                continue
-            sum = 0.
-            for k in range(jdim):
-                elm = set.item((k,j))
-                if elm:
-                    err = (elm - mean[j])**2
-                    sum = sum + err
-            var.append(sum/(cnt-1))
-        array[i]   = mean
-        array[i+4] = var
+                row.append(set.item((k,j)))
+            mx.append(mean(row))
+            vx.append(var(row,mx[-1]))
+        array[i]   = mx
+        array[i+4] = vx
     return array
 
 def pop(key):
@@ -176,40 +182,29 @@ def max(array,idim):
 
 def angle(array,rmax):
 
-    sum = [0.0 for i in range(2)]
+    s = [0.0 for i in range(2)]
     for i in range(2):
         for e in array[i]:
-            sum[0] = sum[0] + e/rmax[i]*array[i+4][0]
-            sum[1] = sum[1] + e/rmax[i]*array[i+4][1]
-    angle = math.degrees(math.atan(sum[1]/sum[0]))
-    print(&quot;\tVpop  = ['%6.3f', '%6.3f']\n\tangle = %10.1f deg\n&quot; %(sum[0],sum[1],angle))
+            s[0] = s[0] + e/rmax[i]*array[i+4][0]
+            s[1] = s[1] + e/rmax[i]*array[i+4][1]
+    angle = math.degrees(math.atan(s[1]/s[0]))
+    print(&quot;\tVpop  = ['%6.3f', '%6.3f']\n\tangle = %10.1f deg\n&quot; %(s[0],s[1],angle))
 
 def regression(X,Y):
 
-    s = [0.0 for i in range(7)]
-    p = [0.0 for n in range(3)]
-
     # mean
-    for i,e in enumerate(X):
-        s[0] = s[0] + 1.
-        s[1] = s[1] + X[i]
-        s[2] = s[2] + Y[i]
-    mx = s[1]/s[0]
-    my = s[2]/s[0]
+    mx = mean(X)
+    my = mean(Y)
 
     # standard deviation
-    for i,e in enumerate(X):
-        s[4] = s[4] + (X[i]-mx)**2
-        s[5] = s[5] + (Y[i]-my)**2
-    sx = math.sqrt(s[4]/(s[0]-1.))
-    sy = math.sqrt(s[5]/(s[0]-1.))
+    sx = math.sqrt(var(X,mx))
+    sy = math.sqrt(var(Y,my))
 
     # correlation
-    for i,e in enumerate(X):
-        s[6] = s[6] + (X[i]-mx)*(Y[i]-my)
-    rxy = s[6]/sx/sy/(s[0]-1.)
+    rxy = cor(X,Y,mx,my,sx,sy)
 
     # slope, intercept, coefficient
+    p    = [[] for n in range(3)]
     p[0] = rxy*sy/sx
     p[1] = my - p[0]*mx
     p[2] = rxy
