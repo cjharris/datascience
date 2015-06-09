@@ -186,7 +186,7 @@ def peak(array,idim):
 
 def angle(array,rmax):
 
-    s = [0.0 for i in range(2)]
+    s = [0. for i in range(2)]
     for i in range(2):
         for e in array[i]:
             s[0] = s[0] + e/rmax[i]*array[i+4][0]
