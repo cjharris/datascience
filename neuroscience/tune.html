@@ -177,7 +177,7 @@ class tune:
 
     def calc(key,idim):
 
-        data   = open(&quot;tuning.pickle&quot;,'rb')
+        data   = open(&quot;../data/tuning.pickle&quot;,'rb')
         stream = pickle.load(data)
         data.close()
 
@@ -202,7 +202,7 @@ class tune:
 
     def pop(key):
 
-        data   = open(&quot;pop_coding.pickle&quot;,'rb')
+        data   = open(&quot;../data/pop_coding.pickle&quot;,'rb')
         stream = pickle.load(data)
         data.close()
 
