@@ -60,7 +60,7 @@ int main(){
   cout << " Parameters stored in 'parameter.Si' file: "
        << m  << " data points counted!!!\n";
   sink << "p0    = " << p0    << endl
-		 << "p1    = " << p1    << endl
+       << "p1    = " << p1    << endl
        << "p2    = " << p2    << endl
        << "sigma = " << sigma << endl;
   sink.close();
