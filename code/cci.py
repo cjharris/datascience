@@ -133,7 +133,7 @@ def cci(symbol,delta,interval):
 
 def main():
 
-	delta    = 40
+	delta    = 20
 	symbol   = "GOOGL"
 	interval = ["2007-12-04","2009-12-31"]
 

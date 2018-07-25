@@ -117,13 +117,13 @@ def bollinger(symbol,delta,interval):
 		print("\t%s\t\t%i\t\t%s\t\t%.4g\t\t%.4g\t\t%.4g" %(matrix[i][0],i,matrix[i][6],mean[i],std[i],rat[i]))
 
 	# display results
-	print("\n  # 40-period lookback cycles =\t%i\n" %(period-delta))
+	print("\n  # %i-period lookback cycles =\t%i\n" %(delta,period-delta))
 	plot(symbol,matrix,mean,std,rat,delta,period)
 	return rat
 
 def main():
 
-	delta    = 40
+	delta    = 20
 	symbol   = "GOOGL"
 	interval = ["2007-12-04","2009-12-31"]
 
