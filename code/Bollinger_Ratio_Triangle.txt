@@ -1,0 +1,113 @@
+using System;
+using System.Drawing;
+using PowerLanguage.Function;
+
+namespace PowerLanguage.Indicator
+{
+    [SameAsSymbol(true)]
+    public class Bollinger_Ratio_Triangle : IndicatorObject
+    {
+        private TriAverage m_triaverage1;
+        private TriAverage m_triaverage2;
+        private VariableSeries<Double> ratio;
+        private Function.NormGradientColor m_normgradientcolor1;
+        private int m_applicationtype;
+        private IPlotObject Plot1;
+        private IPlotObject Plot2;
+        private IPlotObject Plot3;
+        private IPlotObject Plot4;
+        private IPlotObject Plot5;
+
+        public Bollinger_Ratio_Triangle(object ctx) :
+            base(ctx){
+            axis      =  0;
+            numdevsdn = -2;
+            numdevsup =  2;
+            avelength =  6;
+            bollength = 20;
+            gridforegroundcolor = Color.Black;
+            dncolor = Color.Red;
+            upcolor = Color.Yellow;
+            colornormlength = 14;
+        }
+
+        private ISeries<double> bollingerprice { get; set; }
+
+        [Input]
+        public int avelength { get; set; }
+
+        [Input]
+        public int bollength { get; set; }
+
+        [Input]
+        public double numdevsup { get; set; }
+
+        [Input]
+        public double numdevsdn { get; set; }
+
+        [Input]
+        public int axis { get; set; }
+
+        [Input]
+        public int colornormlength { get; set; }
+
+        [Input]
+        public Color upcolor { get; set; }
+
+        [Input]
+        public Color dncolor { get; set; }
+
+        [Input]
+        public Color gridforegroundcolor { get; set; }
+
+        protected override void Create(){
+            m_triaverage1 = new TriAverage(this);
+            m_triaverage2 = new TriAverage(this);
+            ratio         = new VariableSeries<Double>(this);
+            m_normgradientcolor1 = new Function.NormGradientColor(this);
+            Plot1 = AddPlot(new PlotAttributes("Axis", 0, Color.Gray, Color.Empty, 0, 0, true));
+            Plot2 = AddPlot(new PlotAttributes("Low", 0, Color.Gray, Color.Empty, 0, 0, true));
+            Plot3 = AddPlot(new PlotAttributes("High", 0, Color.Gray, Color.Empty, 0, 0, true));
+            Plot4 = AddPlot(new PlotAttributes("Ratio", 0, Color.Cyan, Color.Empty, 0, 0, true));
+            Plot5 = AddPlot(new PlotAttributes("Ave", 0, Color.Blue, Color.Empty, 0, 0, true));
+        }
+
+        protected override void StartCalc(){
+            bollingerprice       = Bars.Close;
+            m_triaverage1.price  = bollingerprice;
+            m_triaverage1.length = bollength;
+            m_triaverage2.price  = ratio;
+            m_triaverage2.length = avelength;
+            m_normgradientcolor1.dataseriesvalue = m_triaverage2;
+            m_normgradientcolor1.crosseszero = true;
+            m_normgradientcolor1.colornormlength = colornormlength;
+            m_normgradientcolor1.upcolor = upcolor;
+            m_normgradientcolor1.dncolor = dncolor;
+            m_applicationtype = (int) Environment.ApplicationCode;
+        }
+
+        protected override void CalcBar(){
+            var m_avg  = m_triaverage1[0];
+            var m_sdev = bollingerprice.StandardDeviationCustom(bollength, 1);
+            if(m_sdev > 0.0) ratio.Value = (bollingerprice[0] - m_avg)/m_sdev;
+            else ratio.Value = 0.0;
+            Plot1.Set(0, axis);
+            Plot2.Set(0, numdevsdn);
+            Plot3.Set(0, numdevsup);
+            Plot4.Set(0, ratio[0]);
+            Plot5.Set(0, m_triaverage2[0]);
+            if (!upcolor.IsEmpty && !dncolor.IsEmpty){
+                var m_colorlevel = m_normgradientcolor1.Value;
+                if (m_applicationtype == 1){
+                    Plot5.Colors[0] = m_colorlevel;
+                }
+                else{
+                    if (m_applicationtype > 1){
+                        Plot5.Colors[0] = gridforegroundcolor;
+                        Plot5.BGColor = m_colorlevel;
+                    }
+                }
+            }
+        }
+    }
+}
