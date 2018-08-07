@@ -1364,7 +1364,7 @@ Fringe Count
 <pre><code>      NewSign:=round(abs(NewPoint-OldPoint))=round(NewPoint-OldPoint);
                           ...
       if NewSign&lt;&gt;OldSign then FringeNum:=FringeNum+0.5;</code></pre>
-<p><br> Therefore, a positive slope will make <i>NewSign</i> ‘true’, while a negative slope results in ‘false’. Of course, <i>NewSign</i> needs the help of <i>OldSign</i>, to retain the previous boolean state of <i>NewSign</i>, to detect a sign reversal. Fortunately, whatever noise exists in the photodiode signal oscillates at a different frequency than the data acquisition rate, so the algorithm remains intact. If noise became an issue, a linear regression slope could replace single data values, preferably 40 data points, to have a statistically significant population count.</p>
+<p><br> Therefore, a positive slope will make <i>NewSign</i> ‘true’, while a negative slope results in ‘false’. Of course, <i>OldSign</i> retains the previous boolean state of <i>NewSign</i>, to detect a sign reversal. Fortunately, whatever noise exists in the photodiode signal oscillates at a different frequency than the data acquisition rate, so the algorithm remains intact. If noise became an issue, a linear regression slope could replace single data values, preferably 40 data points, to have a statistically significant population count.</p>
 </div>
 </h4>
 <p><br></p>
