@@ -340,7 +340,7 @@ Introduction
 <br>
 <h4>
 <div class="fmt">
-<p>When designing a process control scheme, carbon dioxide lasers require special attention, as cavity tuning plays a major role in optimization, before a setpoint takes precedent. An operating procedure, featuring proportional control with a directional unit vector, is proposed as a model to match the system to existing control structure. Pascal code, in the context of algorithm development, and interference fringe count, to determine film thickness, complement this exposition on computational process control aspects of laser-induced chemical vapor deposition.</p>
+<p>When designing a process control scheme, carbon dioxide lasers require cavity tuning optimization, before a setpoint takes precedent. To bring control theory in line with system dynamics, a new model projects a directional component on proportional control. Pascal code, in the context of algorithm development, and interference fringe count, to determine film thickness, complement this exposition on computational aspects of laser-induced chemical vapor deposition.</p>
 </div>
 </h4>
 <p><br></p>
@@ -1326,9 +1326,9 @@ Usually within an hour of setpoint maximization, it converges on a stable value,
           if dM&lt;0 then dM:=-Kc*100 else dM:=Kc*100;      { spike voltage for reversal                    }
         end; { if }                                      {                                               }
       DesiredVolts:=DesiredVolts+Direction*dM;           { account for direction in voltage output       }
-      if DesiredVolts&gt;=0   then DesiredVolts:=-6;        { move mirror to safe place at high threshold   }
-      if DesiredVolts&lt;=-10 then DesiredVolts:=-3;        { move mirror to safe place at low threshold    }</code></pre>
-<p><br> With a stable setpoint, error divergence signifies a failure on the part of ‘unidirectional proportional control’. Therefore, complement the model with a unit vector direction component, which lies along the axis of the laser beam, having only plus or minus orientations, coincident with mirror propulsion. To diminish boundary layer influence, a voltage spike restores the system to a stable location within the optimum tuning regime. For a resonating laser cavity, you need an integral number of half-wavelengths, consistent with a standing wave. Through empirical analysis, the last two threshold statements represent an infrared ‘quantum leap’, landing at a different half-lambda position, respecting phase. Hence, process control proceeds by drifting the laser mirror back and forth, on the crest of a high intensity power wave, in accordance with ‘bidirectional proportional control’. Perhaps an analogy with a surfer applies, since the optimum power region adjusts to natural conditions, as an ocean wave responds to topography, in a dynamic state of change.</p>
+      if DesiredVolts&gt;=0   then DesiredVolts:=-6;        { move mirror to equivalent place at threshold  }
+      if DesiredVolts&lt;=-10 then DesiredVolts:=-3;        {                                               }</code></pre>
+<p><br> With a stable setpoint, error divergence signifies a failure on the part of ‘asymmetric proportional control’. Therefore, enhance the model with a complementary unit vector, which lies along the axis of the laser beam, having only plus or minus orientations, coincident with mirror propulsion. To diminish boundary layer influence, a voltage spike restores the system to a stable location within the optimum tuning regime. For a resonating laser cavity, you need an integral number of half-wavelengths, consistent with a standing wave. Through empirical analysis, the last two threshold statements represent an infrared ‘quantum leap’, landing at a different half-lambda position, respecting phase. Hence, process control proceeds by drifting the laser mirror back and forth, on the crest of a high intensity power wave, in accordance with ‘symmetric proportional control’. Perhaps an analogy with a surfer applies, since the optimum power region adjusts to natural conditions, as an ocean wave responds to topography, in a dynamic state of change.</p>
 </div>
 </h4>
 <p><br></p>
